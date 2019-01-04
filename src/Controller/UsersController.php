@@ -15,7 +15,7 @@ class UsersController extends AppController
     public function initialize()
     {
         parent::initialize();
-        //$this->Auth->allow(['logout']);
+       // $this->Auth->allow(['logout']);
     }
 
     public function logout()
@@ -31,7 +31,6 @@ class UsersController extends AppController
     public function index()
     {
         $users = $this->paginate($this->Users);
-
         $this->set(compact('users'));
         $this->set('_serialize', ['users']);
     }

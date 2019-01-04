@@ -66,4 +66,7 @@ class PagesController extends AppController
             throw new NotFoundException();
         }
     }
+    public function home(){
+        return array("Peter"=>"35", "Ben"=>"37", "Joe"=>"43");
+    }
 }

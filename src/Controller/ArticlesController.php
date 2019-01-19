@@ -1,86 +1,109 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mario
- * Date: 12/4/2017
- * Time: 9:18 PM
- */
-
-// src/Controller/ArticlesController.php
-
 namespace App\Controller;
 
+use App\Controller\AppController;
+
+/**
+ * Articles Controller
+ *
+ * @property \App\Model\Table\ArticlesTable $Articles
+ *
+ * @method \App\Model\Entity\Article[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ */
 class ArticlesController extends AppController
 {
-	 public $paginate = [
-        'limit' => 5,
-    ];
+
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
     public function index()
     {
-        
-        $articles = $this->paginate($this->Articles->find());
-       // pr($articles);
+        $articles = $this->paginate($this->Articles);
+
         $this->set(compact('articles'));
     }
-    public function view($slug = null)
+
+    /**
+     * View method
+     *
+     * @param string|null $id Article id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
     {
-        $article = $this->Articles->findBySlug($slug)->firstOrFail();
-        $this->set(compact('article'));
+        $article = $this->Articles->get($id, [
+            'contain' => ['Tags']
+        ]);
+
+        $this->set('article', $article);
     }
+
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
     public function add()
     {
         $article = $this->Articles->newEntity();
         if ($this->request->is('post')) {
             $article = $this->Articles->patchEntity($article, $this->request->getData());
-
-            // Hardcoding the user_id is temporary, and will be removed later
-            // when we build authentication out.
-            $article->user_id = 1;
-
             if ($this->Articles->save($article)) {
-                $this->Flash->success(__('Your article has been saved.'));
+                $this->Flash->success(__('The article has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Unable to add your article.'));
+            $this->Flash->error(__('The article could not be saved. Please, try again.'));
         }
-        // Get a list of tags.
-        $tags = $this->Articles->Tags->find('list');
-
-        // Set tags to the view context
-        $this->set('tags', $tags);
-
-        $this->set('article', $article);
+        $tags = $this->Articles->Tags->find('list', ['limit' => 200]);
+        $this->set(compact('article', 'tags'));
     }
-    public function edit($slug)
-    { $article = $this->Articles
-        ->findBySlug($slug)
-        ->contain('Tags') // load associated Tags
-        ->firstOrFail();
-        if ($this->request->is(['post', 'put'])) {
-            $this->Articles->patchEntity($article, $this->request->getData());
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Article id.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $article = $this->Articles->get($id, [
+            'contain' => ['Tags']
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $article = $this->Articles->patchEntity($article, $this->request->getData());
             if ($this->Articles->save($article)) {
-                $this->Flash->success(__('Your article has been updated.'));
+                $this->Flash->success(__('The article has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Unable to update your article.'));
+            $this->Flash->error(__('The article could not be saved. Please, try again.'));
         }
-
-        // Get a list of tags.
-        $tags = $this->Articles->Tags->find('list');
-
-        // Set tags to the view context
-        $this->set('tags', $tags);
-
-        $this->set('article', $article);
+        $tags = $this->Articles->Tags->find('list', ['limit' => 200]);
+        $this->set(compact('article', 'tags'));
     }
-    public function delete($slug)
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id Article id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-
-        $article = $this->Articles->findBySlug($slug)->firstOrFail();
+        $article = $this->Articles->get($id);
         if ($this->Articles->delete($article)) {
-            $this->Flash->success(__('The {0} article has been deleted.', $article->title));
-            return $this->redirect(['action' => 'index']);
+            $this->Flash->success(__('The article has been deleted.'));
+        } else {
+            $this->Flash->error(__('The article could not be deleted. Please, try again.'));
         }
+
+        return $this->redirect(['action' => 'index']);
     }
 }

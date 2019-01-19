@@ -8,7 +8,7 @@ use App\Controller\AppController;
  *
  * @property \App\Model\Table\TagsTable $Tags
  *
- * @method \App\Model\Entity\Tag[] paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class TagsController extends AppController
 {
@@ -23,7 +23,6 @@ class TagsController extends AppController
         $tags = $this->paginate($this->Tags);
 
         $this->set(compact('tags'));
-        $this->set('_serialize', ['tags']);
     }
 
     /**
@@ -40,7 +39,6 @@ class TagsController extends AppController
         ]);
 
         $this->set('tag', $tag);
-        $this->set('_serialize', ['tag']);
     }
 
     /**
@@ -62,7 +60,6 @@ class TagsController extends AppController
         }
         $articles = $this->Tags->Articles->find('list', ['limit' => 200]);
         $this->set(compact('tag', 'articles'));
-        $this->set('_serialize', ['tag']);
     }
 
     /**
@@ -88,7 +85,6 @@ class TagsController extends AppController
         }
         $articles = $this->Tags->Articles->find('list', ['limit' => 200]);
         $this->set(compact('tag', 'articles'));
-        $this->set('_serialize', ['tag']);
     }
 
     /**

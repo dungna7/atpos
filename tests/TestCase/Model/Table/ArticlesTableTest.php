@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\TagsTable;
+use App\Model\Table\ArticlesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\TagsTable Test Case
+ * App\Model\Table\ArticlesTable Test Case
  */
-class TagsTableTest extends TestCase
+class ArticlesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\TagsTable
+     * @var \App\Model\Table\ArticlesTable
      */
-    public $Tags;
+    public $Articles;
 
     /**
      * Fixtures
@@ -24,8 +24,8 @@ class TagsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.tags',
-        'app.articles'
+        'app.articles',
+        'app.tags'
     ];
 
     /**
@@ -36,8 +36,8 @@ class TagsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Tags') ? [] : ['className' => TagsTable::class];
-        $this->Tags = TableRegistry::get('Tags', $config);
+        $config = TableRegistry::exists('Articles') ? [] : ['className' => ArticlesTable::class];
+        $this->Articles = TableRegistry::get('Articles', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class TagsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Tags);
+        unset($this->Articles);
 
         parent::tearDown();
     }
@@ -63,21 +63,21 @@ class TagsTableTest extends TestCase
     }
 
     /**
-     * Test validationDefault method
+     * Test beforeSave method
      *
      * @return void
      */
-    public function testValidationDefault()
+    public function testBeforeSave()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test buildRules method
+     * Test validationDefault method
      *
      * @return void
      */
-    public function testBuildRules()
+    public function testValidationDefault()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

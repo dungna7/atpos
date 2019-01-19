@@ -33,16 +33,20 @@ class TagsFixture extends TestFixture
     // @codingStandardsIgnoreEnd
 
     /**
-     * Records
+     * Init method
      *
-     * @var array
+     * @return void
      */
-    public $records = [
-        [
-            'id' => 1,
-            'title' => 'Lorem ipsum dolor sit amet',
-            'created' => '2017-12-06 13:23:43',
-            'modified' => '2017-12-06 13:23:43'
-        ],
-    ];
+    public function init()
+    {
+        $this->records = [
+            [
+                'id' => 1,
+                'title' => 'Lorem ipsum dolor sit amet',
+                'created' => '2019-01-19 02:58:11',
+                'modified' => '2019-01-19 02:58:11'
+            ],
+        ];
+        parent::init();
+    }
 }

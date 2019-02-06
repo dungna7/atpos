@@ -30,7 +30,22 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $users = $this->paginate($this->Users);
+        // $users = $this->paginate($this->Users);
+         $users =array(  
+            [  
+            "id" => 1,
+            "email" => "cakephp@example.com",
+            "created"=> "2019-02-06T23:36:38+00:00",
+            "modified"=> "2019-02-06T23:36:38+00:00"
+            ],
+           [ 
+            "id"=> 2,
+            "email"=> "binh@gmail.com",
+            "created"=> "2019-02-06T14:49:21+00:00",
+            "modified"=> "2019-02-06T14:49:21+00:00"
+           ]
+      );
+        // echo $u ;die;
         $this->set(compact('users'));
         $this->set('_serialize', ['users']);
     }
